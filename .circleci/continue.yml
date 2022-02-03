@@ -1,0 +1,38 @@
+version: 2.1
+
+parameters:
+  build-app:
+    type: boolean
+    default: false
+  build-api:
+    type: boolean
+    default: false
+
+jobs:
+  #look into creating a sparse checkout jobs?
+  build-app-a:
+    docker:
+      - image: cimg/go:1.16.2
+    steps:
+      - run:
+          name: build app
+          command: |
+            echo "building app!"
+  build-api-a:
+    docker:
+      - image: cimg/go:1.16.2
+    steps:
+      - run:
+          name: build app
+          command: |
+            echo "building api!"
+
+workflows:
+  api:
+    when: << pipeline.parameters.build-api >>
+    jobs:
+      - build-api-a
+  app:
+    when: << pipeline.parameters.build-app >>
+    jobs:
+      - build-app-a
